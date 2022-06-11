@@ -1,8 +1,9 @@
 import 'package:belindaproje/Sekmeler/login.dart';
 import 'package:belindaproje/Sekmeler/main_Page.dart';
+import 'package:belindaproje/Sekmeler/not.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lottie/lottie.dart';
 
 class userpage extends main_page {
   const userpage({Key? key}) : super(key: key);
@@ -10,23 +11,6 @@ class userpage extends main_page {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-   String getUserType() {
-     String deneme = "Deneme" ;
-      var ref = firestore.collection("users").doc("Y6UDa4oBH6Vm2N5cnOrAQM1dMu63").get();
-      ref.then((DocumentSnapshot documentSnapshot) {
-        deneme= documentSnapshot.get("name") ;
-
-      });
-      return deneme ;
-    }
-
-    var kullanici = users
-        .doc("Y6UDa4oBH6Vm2N5cnOrAQM1dMu63")
-        .get()
-        .then((value) => value.get("name"));
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("Kullanıcı Sayfası"),
@@ -37,7 +21,7 @@ class userpage extends main_page {
           child: Column(
             children: [
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,7 +48,7 @@ class userpage extends main_page {
                     ],
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Row(
                     children: [
@@ -72,11 +56,11 @@ class userpage extends main_page {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(getUserType(),),
+                      Text("Deneme"),
                     ],
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Row(
                     children: [
@@ -84,11 +68,11 @@ class userpage extends main_page {
                       SizedBox(
                         width: 10,
                       ),
-                      text("Deneme"),
+                      text( "Deneme"),
                     ],
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   Row(
                     children: [
@@ -100,7 +84,7 @@ class userpage extends main_page {
                     ],
                   ),
                   const SizedBox(
-                    height: 50,
+                    height: 10,
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -112,9 +96,32 @@ class userpage extends main_page {
                       });
                     },
                     child: const Text("Çıkış Yap"),
-                  )
+                  ),
+
                 ],
               ),
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Lottie.asset('assets/104848-ui-design-concept.json',
+                      height: 180,
+                      width: 180),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>  not()));
+
+                        },
+                        child: const Text("Kendine Not Bırak"),
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -134,10 +141,16 @@ Widget text(String txxt) {
   );
 }
 
-// class GetUserName extends StatelessWidget {
+
+
+
+
+
+// class userpage extends StatelessWidget {
+//
 //   final String documentId;
 //
-//   GetUserName(this.documentId);
+//   userpage(this.documentId);
 //
 //   @override
 //   Widget build(BuildContext context) {
@@ -158,7 +171,7 @@ Widget text(String txxt) {
 //
 //         if (snapshot.connectionState == ConnectionState.done) {
 //           Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
-//           return Text("Full Name: ${data['full_name']} ${data['last_name']}");
+//           return Text("Full Name: ${data['name']} ${data['surname']}");
 //         }
 //
 //         return Text("loading");
@@ -206,3 +219,4 @@ Widget text(String txxt) {
 //     );
 //   }
 // }
+

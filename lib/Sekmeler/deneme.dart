@@ -1,7 +1,7 @@
-
 import 'package:belindaproje/Sekmeler/Satinal.dart';
 import 'package:belindaproje/Sekmeler/userpage.dart';
 import 'package:belindaproje/service/model.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -44,19 +44,13 @@ class _Sepet extends State<Sepet> {
                             itemCount: list.length,
                             itemBuilder: (context, index) {
                               ModelAdapter personModel = list[index];
-                              return sepeturun(personModel.resimadres, personModel.name, personModel.adet, personModel.fiyat);
-                              //   ListTile(
-                              //   title: Text(personModel.name),
-                              //   leading: Text(personModel.id.toString()),
-                              //   subtitle: Text(
-                              //       personModel.resimadres.toString().toString()),
-                              // );
+                              return sepeturun(personModel.resimadres, personModel.name, personModel.adet, personModel.fiyat,context);
                             },
                           );
                         },
                       ),
-                      Align(
-                        alignment: Alignment.topRight,
+                      Padding(
+                        padding: EdgeInsetsDirectional.only(top: 490 , bottom: 8,start: 330),
                         child: SizedBox(
                           child: IconButton(
                             icon: const Icon(Icons.shopping_cart),
@@ -156,7 +150,7 @@ class _Sepet extends State<Sepet> {
 Future<List<ModelAdapter>> getAllModelAdapter() async {
   Box<ModelAdapter> hive = Hive.box<ModelAdapter>('model');
   List<ModelAdapter> _all = hive.values.toList();
-  // hive.delete(_all[0].id);
+
   _all.forEach(
         (element) {
 
@@ -177,12 +171,17 @@ Future<List<ModelAdapter>> getAllModelAdapter() async {
   return _all;
 }
 
-Widget sepeturun (String urunresmi , String urunadi , int adet , int fiyat){
+Widget sepeturun (String urunresmi , String urunadi , int adet , int fiyat , BuildContext context){
   Box<ModelAdapter> hive = Hive.box<ModelAdapter>('model');
+
  return
   GestureDetector(
+
     onDoubleTap: (){
-        print("2 kere bastı");
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content : Text("Silmek için basılı tutun!!")));
+
+
     },
     onLongPress: (){
       final List<ModelAdapter> _all = hive.values.toList();

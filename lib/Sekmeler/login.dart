@@ -26,7 +26,12 @@ class _loginpageState extends State<loginpage> {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passawordController.text.trim(),
+
+
         );
+        Navigator.
+        push(context,
+            MaterialPageRoute(builder: (context) => Homapage()));
       } on FirebaseAuthException catch (e) {
         print('Failed with error code: ${e.code}');
         print(e.message);
@@ -34,7 +39,6 @@ class _loginpageState extends State<loginpage> {
             .showSnackBar(SnackBar(content : Text(e.message.toString(),)));
 
       }
-
 
 
     }
@@ -103,9 +107,8 @@ class _loginpageState extends State<loginpage> {
                 onPressed: () async {
 
                  signIn().then((value) {
-                   Navigator.
-                   push(context,  MaterialPageRoute(builder: (context) =>  Homapage()) );
-
+                   ScaffoldMessenger.of(context)
+                       .showSnackBar(SnackBar(content : Text("Hoşgeldiniz")));
                  },
                  );
                 },
@@ -124,11 +127,14 @@ class _loginpageState extends State<loginpage> {
                  style:
                  ElevatedButton.styleFrom(primary: Colors.blue),
                  onPressed: () async {
-                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                         return
-                           signpage();
-                       }
-                       ) );
+
+                     Navigator.push(
+                         context, MaterialPageRoute(builder: (context) {
+                       return
+                         signpage();
+                     }
+                     ));
+
                  },
                  child: const Text(
                    "Üye Ol",

@@ -1,8 +1,10 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'login.dart';
 class signpage extends StatefulWidget {
+
   const signpage({Key? key}) : super(key: key);
 
   @override
@@ -10,12 +12,16 @@ class signpage extends StatefulWidget {
 }
 
 class _signpageState extends State<signpage> {
-
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
    TextEditingController ussernamecontroller =TextEditingController();
+   TextEditingController surnamecontroller =TextEditingController();
+   TextEditingController telcontroller =TextEditingController();
    TextEditingController emailcontroller =TextEditingController();
    TextEditingController passwordcontroller =TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
 
 
     return  Scaffold (
@@ -30,22 +36,11 @@ class _signpageState extends State<signpage> {
                     children:  [
                       const Center(child: Text("Üye Ol" , style: TextStyle(fontSize: 30, color: Colors.blue, fontWeight: FontWeight.bold),)),
                       const SizedBox(height: 20),
-                       TextField(
-                      controller: ussernamecontroller,
-                        decoration: InputDecoration(
-                            hintText: "Kullanıcı Adı",
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                )
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                )
-                            )
-                        ),
-                      ),
+                    textekle("Kullanıcı Adı", ussernamecontroller),
+
+                     textekle("Soyadı:", surnamecontroller),
+
+                      textekle("Tel:", telcontroller),
                        TextField(
                         controller: emailcontroller,
                          keyboardType: TextInputType.emailAddress,
@@ -94,14 +89,28 @@ class _signpageState extends State<signpage> {
                             padding: const EdgeInsets.all(12.0),
                             child: FloatingActionButton.extended(
                               onPressed: () {
-                                FirebaseAuth.instance.createUserWithEmailAndPassword(
-                                    email: emailcontroller.text.trim(),
-                                    password: passwordcontroller.text.trim()).then((value) =>
-                                {
-                                Navigator.push(context,  MaterialPageRoute(builder: (context) =>  loginpage() )),
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(content : Text("Kullanıcı Oluşturuldu"))),
-                                });
+                                if (emailcontroller.text.isNotEmpty & passwordcontroller.text.isNotEmpty) {
+                                  FirebaseAuth.instance
+                                      .createUserWithEmailAndPassword(
+                                      email: emailcontroller.text.trim(),
+                                      password: passwordcontroller.text.trim())
+                                      .then((value) =>
+                                  {
+                                   users.add({
+                                     'name':ussernamecontroller.text,
+                                      'surname':surnamecontroller.text,
+                                     'tel':telcontroller.text,
+                                   }) ,
+
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) => loginpage())),
+
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(content: Text(
+                                        "Kullanıcı Oluşturuldu"))),
+                                  });
+                                }
+                                else { print("bos");  };
                               },
                               label: const Text('Üye Ol'),
                               icon: const Icon(Icons.thumb_up),
@@ -121,4 +130,27 @@ class _signpageState extends State<signpage> {
       ),
     );
   }
+}
+
+
+
+
+Widget textekle (String text , TextEditingController controller) {
+  return
+    TextField(
+      controller: controller,
+      decoration: InputDecoration(
+          hintText: text,
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey,
+              )
+          ),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey,
+              )
+          )
+      ),
+    );
 }

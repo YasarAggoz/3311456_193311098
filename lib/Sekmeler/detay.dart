@@ -213,7 +213,6 @@ Future<List<ModelAdapter>> getAllModelAdapter() async {
   Box<ModelAdapter> hive = Hive.box<ModelAdapter>('model');
 
   List<ModelAdapter> _all = hive.values.toList();
-  // hive.delete(_all[0].id);
   _all.forEach(
     (element) {
       print(element.name +

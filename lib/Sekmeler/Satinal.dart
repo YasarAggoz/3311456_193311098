@@ -54,11 +54,11 @@ class _BuyScreenState extends State<Satinal> {
               ),
               SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 130),
+                  padding: const EdgeInsets.only(left: 320),
                   child: Row(
                     children: [
                       Card(
-                        elevation: 8,
+                        elevation: 10,
                         color: Colors.white,
                         child: IconButton(
                           icon: const Icon(Icons.account_balance_sharp),
@@ -68,7 +68,7 @@ class _BuyScreenState extends State<Satinal> {
                               final List<ModelAdapter> _all = hive.values.toList();
                               hive.deleteAll(hive.keys);
                               ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(content : Text("İyi Günlerde Kullanın")));
+                                  .showSnackBar(SnackBar(content : Text("Siparişiniz Oluşturuldu")));
                               Navigator.push (
                                 context,
                                 MaterialPageRoute(builder: (context) => Homapage(),),
