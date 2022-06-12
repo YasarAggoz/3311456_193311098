@@ -18,6 +18,7 @@ class _signpageState extends State<signpage> {
    TextEditingController telcontroller =TextEditingController();
    TextEditingController emailcontroller =TextEditingController();
    TextEditingController passwordcontroller =TextEditingController();
+   FirebaseAuth denem = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -96,10 +97,12 @@ class _signpageState extends State<signpage> {
                                       password: passwordcontroller.text.trim())
                                       .then((value) =>
                                   {
-                                   users.add({
+                                   users.doc(denem.currentUser!.uid).set({
                                      'name':ussernamecontroller.text,
                                       'surname':surnamecontroller.text,
                                      'tel':telcontroller.text,
+                                     'email':emailcontroller.text,
+                                     'userid':denem.currentUser!.uid,
                                    }) ,
 
                                     Navigator.push(context, MaterialPageRoute(

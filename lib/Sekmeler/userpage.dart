@@ -1,17 +1,48 @@
 import 'package:belindaproje/Sekmeler/login.dart';
 import 'package:belindaproje/Sekmeler/main_Page.dart';
 import 'package:belindaproje/Sekmeler/not.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lottie/lottie.dart';
 
-class userpage extends main_page {
-  const userpage({Key? key}) : super(key: key);
+class userpage extends StatefulWidget {
+  @override
+  State<userpage> createState() => _userpageState();
+}
+
+class _userpageState extends State<userpage> {
+  final user = FirebaseAuth.instance.currentUser;
+
+  var _name;
+  var _surName;
+  var _tel;
+
+
+
+  users() async {
+    var ref = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    await ref.then((DocumentSnapshot value) async {
+      if (mounted) {
+        setState(() {
+          _name = value.get("name").toString();
+          _surName = value.get("surname").toString();
+          _tel = value.get("tel");
+
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
+    users();
+
     return Scaffold(
+
       appBar: AppBar(
         title: const Text("Kullanıcı Sayfası"),
       ),
@@ -56,7 +87,9 @@ class userpage extends main_page {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Deneme"),
+
+                      Text('deneme'),
+
                     ],
                   ),
                   const SizedBox(
@@ -68,7 +101,7 @@ class userpage extends main_page {
                       SizedBox(
                         width: 10,
                       ),
-                      text( "Deneme"),
+                      text( 'deneme'),
                     ],
                   ),
                   const SizedBox(
@@ -80,7 +113,7 @@ class userpage extends main_page {
                       SizedBox(
                         width: 10,
                       ),
-                      text("0555 555 55 55"),
+                      text('5555555'),
                     ],
                   ),
                   const SizedBox(

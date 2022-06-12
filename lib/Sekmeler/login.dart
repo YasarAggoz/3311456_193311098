@@ -1,6 +1,5 @@
 import 'package:belindaproje/Sekmeler/homepage.dart';
 import 'package:belindaproje/Sekmeler/sign.dart';
-import 'package:belindaproje/araclar/navigator.dart';
 import 'package:belindaproje/service/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
